@@ -1,67 +1,23 @@
-# My FastAPI App
+Explicação sobre a chamada assíncrona.
 
-This is a sample FastAPI application that demonstrates the use of asynchronous API calls. It includes a main entry point file, unit tests, and a requirements file.
+```python
+@pytest.mark.asyncio
+async def test_endpoint_assincrono():
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        response = await ac.get("/endpoint_assincrono")
+    assert response.status_code == 200
+    assert response.json() == {"mensagem": "Este é um endpoint assíncrono"}
+````
 
-## Project Structure
 
-The project has the following structure:
+Este é um teste unitário para um endpoint assíncrono em um aplicativo FastAPI. Ele usa a biblioteca pytest para definir o teste e a biblioteca httpx para fazer chamadas HTTP assíncronas. Aqui está o que cada parte do código está fazendo:
 
-```
-my-fastapi-app
-├── main.py
-├── test_main.py
-├── requirements.txt
-└── README.md
-```
+@pytest.mark.asyncio: Esta é uma anotação que indica ao pytest que a função de teste é uma corotina assíncrona. Isso permite que o pytest execute a função de teste em um loop de eventos, que é necessário para executar corotinas assíncronas.
 
-- `main.py`: This file is the main entry point of the FastAPI application. It contains the implementation of the API endpoints and their corresponding asynchronous functions.
+async def test_endpoint_assincrono(): Esta é a definição da função de teste. A palavra-chave async indica que a função é uma corotina assíncrona.
 
-- `test_main.py`: This file contains the unit tests for the FastAPI application. It tests the asynchronous nature of the API calls and verifies the expected behavior of the endpoints.
+async with AsyncClient(app=app, base_url="http://test") as ac: Esta linha está criando uma instância de AsyncClient e abrindo uma sessão HTTP assíncrona. A palavra-chave async with é usada para gerenciar automaticamente o ciclo de vida da sessão HTTP.
 
-- `requirements.txt`: This file lists the dependencies required for the project. It includes the necessary packages, such as FastAPI and any other libraries used in the application.
+response = await ac.get("/endpoint_assincrono"): Esta linha está fazendo uma chamada GET assíncrona ao endpoint /endpoint_assincrono. A palavra-chave await é usada para suspender a execução da corotina até que a chamada GET seja concluída. Isso permite que outras corotinas sejam executadas no loop de eventos enquanto a chamada GET está em andamento.
 
-## Setup
-
-To set up the project, follow these steps:
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/my-fastapi-app.git
-   ```
-
-2. Install the dependencies:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Run the FastAPI application:
-
-   ```bash
-   uvicorn main:app --reload
-   ```
-
-## Usage
-
-Once the FastAPI application is running, you can access the API endpoints using the following URLs:
-
-- `http://localhost:8000/`: The root endpoint of the API.
-
-## Testing
-
-To run the unit tests for the FastAPI application, use the following command:
-
-```bash
-pytest
-```
-
-The tests in `test_main.py` will verify the asynchronous nature of the API calls and ensure the expected behavior of the endpoints.
-
-## Contributing
-
-Contributions are welcome! If you have any suggestions, improvements, or bug fixes, please submit a pull request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
+assert response.status_code == 200 e assert response.json() == {"mensagem": "Este é um endpoint assíncrono"}: Estas linhas estão verificando se a resposta da chamada GET é o que esperamos. A primeira asserção verifica se o código de status HTTP da resposta é 200, que indica sucesso. A segunda asserção verifica se o corpo da resposta é {"mensagem": "Este é um endpoint assíncrono"}.

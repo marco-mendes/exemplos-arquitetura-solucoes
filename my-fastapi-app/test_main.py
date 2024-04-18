@@ -1,11 +1,15 @@
 import pytest
 from fastapi.testclient import TestClient
+from httpx import AsyncClient
 from main import app
 
 client = TestClient(app)
 
-def test_endpoint_assincrono():
-    response = client.get("/endpoint_assincrono")
+
+@pytest.mark.asyncio
+async def test_endpoint_assincrono():
+    async with AsyncClient(app=app, base_url="http://endereco_base") as ac:
+        response = await ac.get("/endpoint_assincrono")
     assert response.status_code == 200
     assert response.json() == {"mensagem": "Este é um endpoint assíncrono"}
 
